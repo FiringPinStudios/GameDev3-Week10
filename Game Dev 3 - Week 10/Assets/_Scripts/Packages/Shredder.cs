@@ -9,7 +9,7 @@ namespace GameDevWithMarco.Managers
         /// </summary>
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
     }
 }

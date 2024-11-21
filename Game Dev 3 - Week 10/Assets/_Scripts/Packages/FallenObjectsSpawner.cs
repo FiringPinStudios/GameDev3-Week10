@@ -1,350 +1,99 @@
-﻿using UnityEngine;
+﻿using GameDevWithMarco.DesignPattern;
+using System.Collections;
+using UnityEngine;
 
 namespace GameDevWithMarco.Managers
 {
     public class FallenObjectsSpawner : MonoBehaviour
     {
-        //Referencing Gameobjects
-        public GameObject[] spawners;
-        public GameObject[] packages;
-        //Timer Method Variables
-        public float countdown = 3f;
-        public float timer = 3f;
-        public float timeBetweenPackages = 2f;
-        //Deploy Method Variables
-        private GameObject packageClone;
-        public int packageRandomness;
-        public int packageLocation;
-        public bool hasBeenDeployed = false;
-        public bool amIaGoodPackage = false;
-        public float timerForLife = 15f;
-        public GameObject lifePackage;
+        [Header("Packages Spawn Position")]
+        [SerializeField] GameObject[] spawners;
+        [Header("Package Delay Variables")]
+        [SerializeField] float initialDelay = 2.0f;
+        [SerializeField] float minDelay = 0.5f;
+        [SerializeField] float delayIncreaseRata = 0.1f;
+        float currentDelay;
+        [Header("Packages Drop Chance Percentages")]
+        [SerializeField] float goodPackageDropPercentage;
+        [SerializeField] float badPackageDropPercentage;
+        [SerializeField] float lifePackageDropPercentage;
 
+        [SerializeField] float minimum_goodPackageDropPercentage;
+        [SerializeField] float maximum_badPackageDropPercentage;
+        [SerializeField] float percentageChangeRatio = 0.1f;
 
-        void Start()
+        private void Start()
         {
-            InitialisationParameters();
+            StartCoroutine(SpawningLoop());
         }
 
-        // Update is called once per frame
-        void Update()
+        private void SpawnPackageAtRandomLocation(ObjectPoolingPattern.TypeOfPool poolType)
         {
-            DeployLife();
-            Countdown();
-            AdaptiveDifficulty();
-            countdown = Mathf.Clamp(countdown, 0, 10);
-            timerForLife -= Time.deltaTime;
-        }
-        private void InitialisationParameters()
-        {
-            countdown = Mathf.Clamp(timer, 0, 10);
-        }
-        private void Countdown()
-        {
-            countdown -= Time.deltaTime;
+            GameObject spawnedPackage = ObjectPoolingPattern.Instance.GetPoolItem(poolType);
 
-            if (countdown <= 0)
-            {
-                DeployOrder();
-            }
+            int randomInteger = Random.Range(0, spawners.Length - 1);
+
+            Vector2 spawnPoisiton = spawners[randomInteger].transform.position;
+
+            spawnedPackage.transform.position = spawnPoisiton;
         }
 
-        private void DeployOrder()
+        private IEnumerator SpawningLoop()
         {
-            packageLocation = Random.Range(0, 4);
-            packageRandomness = Random.Range(0, 10);
+            SpawnPackageAtRandomLocation(GetPackageTypeBasedOnPercentage());
 
-            timer -= Time.deltaTime;
+            yield return new WaitForSeconds(currentDelay);
 
-            if (timer <= 0)
-            {
-                DeployPackage_Beginning();
-                timer = 3f;
-            }
-        }
-        private void DeployPackage_Beginning()
-        {
-            switch (packageRandomness)
-            {
-                case 0:
-                    Instantiate(packages[0], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 1:
-                    Instantiate(packages[1], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = false;
-                    break;
-                case 2:
-                    Instantiate(packages[2], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = false;
-                    break;
-                case 3:
-                    Instantiate(packages[3], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 4:
-                    Instantiate(packages[4], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 5:
-                    Instantiate(packages[5], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 6:
-                    Instantiate(packages[6], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 7:
-                    Instantiate(packages[7], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 8:
-                    Instantiate(packages[8], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 9:
-                    Instantiate(packages[9], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 10:
-                    Instantiate(packages[10], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
+            currentDelay -= delayIncreaseRata;
 
-            }
+            if (currentDelay < minDelay)
+                currentDelay = minDelay;
 
-            hasBeenDeployed = true;
-        }
-        private void DeployPackage_Middle()
-        {
-
-            switch (packageRandomness)
-            {
-                case 0:
-                    Instantiate(packages[0], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 1:
-                    Instantiate(packages[1], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = false;
-                    break;
-                case 2:
-                    Instantiate(packages[2], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = false;
-                    break;
-                case 3:
-                    Instantiate(packages[3], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 4:
-                    Instantiate(packages[4], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 5:
-                    Instantiate(packages[5], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 6:
-                    Instantiate(packages[5], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 7:
-                    Instantiate(packages[7], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 8:
-                    Instantiate(packages[8], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 9:
-                    Instantiate(packages[9], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 10:
-                    Instantiate(packages[10], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-
-            }
-
-            hasBeenDeployed = true;
-        }
-        private void DeployPackage_End()
-        {
-
-            switch (packageRandomness)
-            {
-                case 0:
-                    Instantiate(packages[0], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 1:
-                    Instantiate(packages[1], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = false;
-                    break;
-                case 2:
-                    Instantiate(packages[2], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = false;
-                    break;
-                case 3:
-                    Instantiate(packages[3], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 4:
-                    Instantiate(packages[5], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 5:
-                    Instantiate(packages[4], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 6:
-                    Instantiate(packages[5], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 7:
-                    Instantiate(packages[6], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 8:
-                    Instantiate(packages[5], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 9:
-                    Instantiate(packages[5], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-                case 10:
-                    Instantiate(packages[5], spawners[packageRandomness].transform.position, Quaternion.identity);
-                    amIaGoodPackage = true;
-                    break;
-
-            }
-
-            hasBeenDeployed = true;
-        }
-        private void DeployLife()
-        {
-            if (timerForLife <= 0)
-            {
-                Instantiate(lifePackage, spawners[packageLocation].transform.position, Quaternion.identity);
-                timerForLife = Random.Range(12f, 20f);
-            }
+            StartCoroutine(SpawningLoop());
         }
 
 
-
-        private void AdaptiveDifficulty()
+        private ObjectPoolingPattern.TypeOfPool GetPackageTypeBasedOnPercentage()
         {
-            if (GameManager.Instance.successRate < 3)
-            {
-                DeployCaseZero();
-            }
-            if (GameManager.Instance.successRate >= 6)
-            {
-                DeployCaseOne();
-            }
-            if (GameManager.Instance.successRate >= 9)
-            {
-                DeployCaseTwo();
-            }
-            if (GameManager.Instance.successRate >= 12)
-            {
-                DeployCaseThree();
-            }
-            if (GameManager.Instance.successRate >= 15)
-            {
-                DeployCaseFour();
-            }
-            if (GameManager.Instance.successRate >= 40)
-            {
-                DeployCaseFive();
-            }
-        }
-        private void DeployCaseZero()
-        {
-            countdown -= Time.deltaTime;
-            if (countdown <= 0)
-            {
-                timer -= Time.deltaTime;
+            float randomValue = Random.Range(0f, 100.1f);
 
-                if (timer <= 0)
-                {
-                    DeployPackage_Beginning();
-                    timer = 3f;
-                }
-            }
-        }
-        private void DeployCaseOne()
-        {
-            countdown -= Time.deltaTime;
-            if (countdown <= 0)
+            if (randomValue <= goodPackageDropPercentage)
             {
-                timer -= Time.deltaTime;
-
-                if (timer <= 0)
-                {
-                    DeployPackage_Beginning();
-                    timer = 2f;
-                }
+                return ObjectPoolingPattern.TypeOfPool.Good;
             }
-        }
-        private void DeployCaseTwo()
-        {
-            countdown -= Time.deltaTime;
-            if (countdown <= 0)
+            else if (randomValue <= goodPackageDropPercentage &&
+                randomValue <= (goodPackageDropPercentage + badPackageDropPercentage))
             {
-                timer -= Time.deltaTime;
-
-                if (timer <= 0)
-                {
-                    DeployPackage_Middle();
-                    timer = 1f;
-                }
+                return ObjectPoolingPattern.TypeOfPool.Bad;
             }
-        }
-        private void DeployCaseThree()
-        {
-            countdown -= Time.deltaTime;
-            if (countdown <= 0)
+            else
             {
-                timer -= Time.deltaTime;
-
-                if (timer <= 0)
-                {
-                    DeployPackage_Middle();
-                    timer = 0.5f;
-                }
-            }
-        }
-        private void DeployCaseFour()
-        {
-            countdown -= Time.deltaTime;
-            if (countdown <= 0)
-            {
-                timer -= Time.deltaTime;
-
-                if (timer <= 0)
-                {
-                    DeployPackage_End();
-                    timer = 0.25f;
-                }
-            }
-        }
-        private void DeployCaseFive()
-        {
-            countdown -= Time.deltaTime;
-            if (countdown <= 0)
-            {
-                timer -= Time.deltaTime;
-
-                if (timer <= 0)
-                {
-                    DeployPackage_End();
-                    timer = 0.10f;
-                }
+                return ObjectPoolingPattern.TypeOfPool.Life;
             }
         }
 
+        private void CaptThePercentages()
+        {
+            if (goodPackageDropPercentage <= minimum_goodPackageDropPercentage &&
+                badPackageDropPercentage >= maximum_badPackageDropPercentage)
+            {
+                goodPackageDropPercentage = minimum_goodPackageDropPercentage;
+                badPackageDropPercentage = maximum_badPackageDropPercentage;
+            }
+        }
+
+        public void GrowBadPercentage()
+        {
+            goodPackageDropPercentage -= percentageChangeRatio;
+            badPackageDropPercentage += percentageChangeRatio;
+            CaptThePercentages();
+        }
+
+        public void GrowGoodPercentage()
+        {
+            goodPackageDropPercentage += percentageChangeRatio;
+            badPackageDropPercentage -= percentageChangeRatio;
+            CaptThePercentages();
+        }
     }
 }
