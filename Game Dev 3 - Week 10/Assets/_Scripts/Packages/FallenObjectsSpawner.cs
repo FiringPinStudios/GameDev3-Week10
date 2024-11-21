@@ -61,7 +61,7 @@ namespace GameDevWithMarco.Managers
             {
                 return ObjectPoolingPattern.TypeOfPool.Good;
             }
-            else if (randomValue <= goodPackageDropPercentage &&
+            else if (randomValue > goodPackageDropPercentage &&
                 randomValue <= (goodPackageDropPercentage + badPackageDropPercentage))
             {
                 return ObjectPoolingPattern.TypeOfPool.Bad;
@@ -72,7 +72,7 @@ namespace GameDevWithMarco.Managers
             }
         }
 
-        private void CaptThePercentages()
+        private void CapThePercentages()
         {
             if (goodPackageDropPercentage <= minimum_goodPackageDropPercentage &&
                 badPackageDropPercentage >= maximum_badPackageDropPercentage)
@@ -86,14 +86,14 @@ namespace GameDevWithMarco.Managers
         {
             goodPackageDropPercentage -= percentageChangeRatio;
             badPackageDropPercentage += percentageChangeRatio;
-            CaptThePercentages();
+            CapThePercentages();
         }
 
         public void GrowGoodPercentage()
         {
             goodPackageDropPercentage += percentageChangeRatio;
             badPackageDropPercentage -= percentageChangeRatio;
-            CaptThePercentages();
+            CapThePercentages();
         }
     }
 }

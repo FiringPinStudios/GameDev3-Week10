@@ -1149,6 +1149,58 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6748926941505527754}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1175327906
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1175327908}
+  - component: {fileID: 1175327907}
+  m_Layer: 0
+  m_Name: Pool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1175327907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175327906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 115a78b106df11542b4b630759aa3ce5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goodPackagePoolData: {fileID: 11400000, guid: 6c23bce1cdf38e3469d86b684b20b394,
+    type: 2}
+  badPackagePoolData: {fileID: 11400000, guid: 1bc394da3e3a0f443b7b05c66b0d41d9, type: 2}
+  lifePackagePoolData: {fileID: 11400000, guid: 6b77044b860a6ac428a156b3eeb927d3,
+    type: 2}
+  goodPool: []
+  badPool: []
+  lifePool: []
+--- !u!4 &1175327908
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175327906}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.2580657, y: 0.45161247, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1185788860
 GameObject:
   m_ObjectHideFlags: 0
@@ -2098,10 +2150,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6748926940924965607, guid: e8134171de3afbe43a802b2688cfd135,
         type: 3}
+      propertyPath: minDelay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748926940924965607, guid: e8134171de3afbe43a802b2688cfd135,
+        type: 3}
       propertyPath: lifePackage
       value: 
       objectReference: {fileID: 1672529824157174036, guid: ce14d5e697e1c7e40ab54f2a57253a55,
         type: 3}
+    - target: {fileID: 6748926940924965607, guid: e8134171de3afbe43a802b2688cfd135,
+        type: 3}
+      propertyPath: initialDelay
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6748926940924965607, guid: e8134171de3afbe43a802b2688cfd135,
         type: 3}
       propertyPath: posArray.Array.size
@@ -2379,7 +2441,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1935659311}
         m_TargetAssemblyTypeName: GameDevWithMarco.Managers.FallenObjectsSpawner,
           Assembly-CSharp
-        m_MethodName: GrowBadPercentage
+        m_MethodName: GrowGoodPercentage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2408,7 +2470,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1935659311}
         m_TargetAssemblyTypeName: GameDevWithMarco.Managers.FallenObjectsSpawner,
           Assembly-CSharp
-        m_MethodName: GrowGoodPercentage
+        m_MethodName: GrowBadPercentage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2604,6 +2666,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8843590717496975853, guid: fcc8838312df518479b1bc21e6db18a6,
         type: 3}
+      propertyPath: startDashTime
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843590717496975853, guid: fcc8838312df518479b1bc21e6db18a6,
+        type: 3}
       propertyPath: dashParticlesLeft
       value: 
       objectReference: {fileID: 0}
@@ -2764,3 +2831,4 @@ SceneRoots:
   - {fileID: 6748926941505527754}
   - {fileID: 5167641514561410361}
   - {fileID: 8048907940845242002}
+  - {fileID: 1175327908}

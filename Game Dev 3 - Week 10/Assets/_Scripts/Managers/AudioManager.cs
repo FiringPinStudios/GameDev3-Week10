@@ -12,7 +12,7 @@ namespace GameDevWithMarco.Managers
         [SerializeField] AudioClip backgroundMusic;
         [SerializeField] SoundSO goodPickupSoundData;
         [SerializeField] SoundSO badPickupSoundData;
-        [SerializeField] SoundSO dashSoundData;
+        [SerializeField] SoundSO dashSoundData  ;
         [SerializeField] SoundSO lifeSoundData;
         [SerializeField] AudioSource audioSource_Music;
         [SerializeField] AudioSource audioSource_Sounds;
