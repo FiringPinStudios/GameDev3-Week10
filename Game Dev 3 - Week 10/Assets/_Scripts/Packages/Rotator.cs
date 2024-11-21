@@ -1,24 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Rotator : MonoBehaviour    
+namespace GameDevWithMarco.Managers
 {
-    /// <summary>
-    /// This script will make the whatever it is attached to
-    /// </summary>
-
-    public float rotationSpeed;
-    
-
-    // Update is called once per frame
-    void Update()
+    public class Rotator : MonoBehaviour
     {
-        Rotation();
-    }
+        /// <summary>
+        /// This script will make the whatever it is attached to
+        /// </summary>
 
-    private void Rotation()
-    {
-        transform.Rotate(0, 0, rotationSpeed);
+        public float rotationSpeed;
+
+
+        // Update is called once per frame
+        void Update()
+        {
+            Rotation();
+        }
+
+        private void Rotation()
+        {
+            transform.Rotate(0, 0, rotationSpeed);
+        }
     }
 }
